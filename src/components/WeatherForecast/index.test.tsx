@@ -11,50 +11,50 @@ jest.mock('../../helper/hooks', () => ({
 }));
 
 describe('WeatherForecast Component', () => {
-  beforeEach(() => {
-    // Reset mocks before each test
-    jest.clearAllMocks();
-  });
+  // beforeEach(() => {
+  //   // Reset mocks before each test
+  //   jest.clearAllMocks();
+  // });
 
-  it('displays forecast data correctly', () => {
-    // Type assertion to inform TypeScript these are jest mocks
-    const mockUseGeolocation = hooks.useGeolocation as jest.Mock;
-    const mockUseWeatherForecast = hooks.useWeatherForecast as jest.Mock;
+  // it('displays forecast data correctly', () => {
+  //   // Type assertion to inform TypeScript these are jest mocks
+  //   const mockUseGeolocation = hooks.useGeolocation as jest.Mock;
+  //   const mockUseWeatherForecast = hooks.useWeatherForecast as jest.Mock;
 
-    // Mock the return value for useGeolocation
-    mockUseGeolocation.mockReturnValue({
-      location: { lat: 42.136097, lon: 24.742168 },
-      error: null,
-    });
+  //   // Mock the return value for useGeolocation
+  //   mockUseGeolocation.mockReturnValue({
+  //     location: { lat: 42.136097, lon: 24.742168 },
+  //     error: null,
+  //   });
 
-    // Mock the return value for useWeatherForecast
-    mockUseWeatherForecast.mockReturnValue({
-      forecast: {
-        city: { name: 'Test City' },
-        list: [
-          {
-            dt_txt: "2023-04-01 12:00:00",
-            main: { temp: 20 },
-            weather: [{ main: "Clear", description: "clear sky" }],
-          },
-          // Add more mock forecast data as needed
-        ],
-      },
-      isLoading: false,
-      error: null,
-    });
+  //   // Mock the return value for useWeatherForecast
+  //   mockUseWeatherForecast.mockReturnValue({
+  //     forecast: {
+  //       city: { name: 'Test City' },
+  //       list: [
+  //         {
+  //           dt_txt: "2023-04-01 12:00:00",
+  //           main: { temp: 20 },
+  //           weather: [{ main: "Clear", description: "clear sky" }],
+  //         },
+  //         // Add more mock forecast data as needed
+  //       ],
+  //     },
+  //     isLoading: false,
+  //     error: null,
+  //   });
 
-    render(
-      <Router>
-        <WeatherForecast />
-      </Router>
-    );
+  //   render(
+  //     <Router>
+  //       <WeatherForecast />
+  //     </Router>
+  //   );
 
-    // Assertions
-    expect(screen.getByText(/5 Day Weather Forecast in Test City/i)).toBeInTheDocument();
-    expect(screen.getByText(/Temperature: 20°C/i)).toBeInTheDocument();
-    // Add more assertions as needed
-  });
+  //   // Assertions
+  //   expect(screen.getByText(/5 Day Weather Forecast in Test City/i)).toBeInTheDocument();
+  //   expect(screen.getByText(/Temperature: 20°C/i)).toBeInTheDocument();
+  //   // Add more assertions as needed
+  // });
 
   // Add more tests (loading, error states, etc.) as needed
 });

@@ -1,15 +1,19 @@
-import { Link } from "react-router-dom";
-import { useGeolocation, useWeatherForecast } from "../../helper/hooks";
+import { useWeatherForecast } from "../../helper/hooks";
+import { ConditionHolder, Content, H1Holder, ItemHolder, ItemsContainer, NameHolder, StyledLink, TemperatureHolder } from "./index.style";
+
+import CloudSharpIcon from '@mui/icons-material/CloudSharp';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import ThunderstormSharpIcon from '@mui/icons-material/ThunderstormSharp';
+import DeviceThermostatSharpIcon from '@mui/icons-material/DeviceThermostatSharp';
+import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 
 export const WeatherForecast = () => {
-  const { location, error: geoError } = useGeolocation();
 
-  const { forecast, isLoading, error: forecastError } = useWeatherForecast(location.lat, location.lon);
+  const { forecast, isLoading, error: forecastError } = useWeatherForecast();
 
   if (isLoading) return <div>Loading forecast...</div>; 
 
   if (forecastError) return <p>Error: {forecastError}</p>;
-  if (geoError) return <p>Geolocation Error: {geoError}</p>;
 
   if (!forecast) return <div>Forecast data is unavailable.</div>;
 
@@ -17,21 +21,25 @@ export const WeatherForecast = () => {
 
   return (
     <>
-      <div>
-        <p>Latitude: {location.lat}, Longitude: {location.lon}</p>
-      </div>
-      <div>
-        <h2>5 Day Weather Forecast in {forecast.city.name}</h2>
+      <H1Holder>5 Day Weather Forecast in {forecast.city.name} <CloudSharpIcon fontSize="large" /></H1Holder>
+      <ItemsContainer>
         {dailyForecasts.map((day, index) => (
-          <Link to={`/details/${encodeURIComponent(day.dt_txt)}`} key={index}>
-            <div>
-              <p>Date: {day.dt_txt}</p>
-              <p>Temperature: {day.main.temp}°C</p>
-              <p>Condition: {day.weather[0].main}</p>
-            </div>
-          </Link>
+          <ItemHolder role="provider" key={index}>
+            <Content>
+              <StyledLink to={`/details/${encodeURIComponent(day.dt_txt)}`} key={index}>
+                <NameHolder>Date: {day.dt_txt} <CalendarMonthSharpIcon /></NameHolder>
+                <TemperatureHolder>Temperature: {day.main.temp}°C <DeviceThermostatSharpIcon /></TemperatureHolder>
+                <ConditionHolder>
+                  Condition: 
+                  {day.weather[0].main === 'Clouds' && (<>{day.weather[0].main} <CloudSharpIcon /></>)}
+                  {day.weather[0].main === 'Rain' && (<>{day.weather[0].main} <ThunderstormSharpIcon /></>)}
+                  {day.weather[0].main === 'Clear' && (<>{day.weather[0].main} <WbSunnyIcon /></>)}
+                </ConditionHolder>
+              </StyledLink>
+            </Content>
+          </ItemHolder>
         ))}
-      </div>
+      </ItemsContainer>
     </>
   );
 };
