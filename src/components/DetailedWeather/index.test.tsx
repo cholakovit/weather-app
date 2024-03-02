@@ -17,23 +17,23 @@ describe('DetailedWeather Component', () => {
   it('displays detailed weather information correctly', () => {
     // Mock return values for hooks
     jest.spyOn(ReactRouterDom, 'useParams').mockReturnValue({ date: '2023-04-01' });
-    jest.spyOn(useDetailedWeatherHook, 'useDetailedWeather').mockReturnValue({
-      weather: {
-        dt: 1603965600, // Include the required `dt` property
-        temp: { day: 20, night: 10 },
-        feels_like: { day: 18, night: 8 },
-        humidity: 60,
-        wind_speed: 5,
-        weather: [{ main: 'Clear', description: 'clear sky' }],
-        clouds: 0,
-        pressure: 1012,
-        uvi: 5,
-        sunrise: 1603965600,
-        sunset: 1604008800,
-      },
-      isLoading: false,
-      error: null,
-    });
+    // jest.spyOn(useDetailedWeatherHook, 'useDetailedWeather').mockReturnValue({
+    //   weather: {
+    //     dt: 1603965600, // Include the required `dt` property
+    //     temp: { day: 20, night: 10 },
+    //     feels_like: { day: 18, night: 8 },
+    //     humidity: 60,
+    //     wind_speed: 5,
+    //     weather: [{ main: 'Clear', description: 'clear sky' }],
+    //     clouds: 0,
+    //     pressure: 1012,
+    //     uvi: 5,
+    //     sunrise: 1603965600,
+    //     sunset: 1604008800,
+    //   },
+    //   isLoading: false,
+    //   error: null,
+    // });
 
     render(
       <BrowserRouter>

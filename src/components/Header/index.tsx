@@ -3,19 +3,14 @@ import {
   MaterialUISwitch,
   WeatherFormControlLabel,
   WeatherAppBar,
-  HeaderContainer
+  HeaderContainer,
+  MetricUISwitch
 } from './index.style';
 
-// Hooks
-import React, { useContext } from 'react';
-
-// Context for the Theme
-import { ColorModeContext } from '../../helper/Context';
-import { colorModeProps } from '../../types';
-
+import { useMetricSystem } from '../../helper/hooks';
 
 const Header = () => {
-  const colorMode: colorModeProps = useContext(ColorModeContext) || {};
+  const { metricSystem, toggleMetricSystem, colorMode } = useMetricSystem();
 
   return (
     <WeatherAppBar>
@@ -24,6 +19,13 @@ const Header = () => {
           label=""
           onClick={colorMode.toggleColorMode}
           control={<MaterialUISwitch defaultChecked />}
+          data-testid="button"
+        />
+
+        <WeatherFormControlLabel
+          label=""
+          onClick={toggleMetricSystem}
+          control={<MetricUISwitch checked={metricSystem === 'C'} />}
           data-testid="button"
         />
       </HeaderContainer>

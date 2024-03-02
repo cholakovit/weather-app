@@ -30,8 +30,6 @@ const App: React.FC = () => {
 
   if (error) return <p>Geolocation Error: {error.message}</p>;
 
-
-
   return (
     
       <div className="App">

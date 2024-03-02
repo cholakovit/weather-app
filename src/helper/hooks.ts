@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { DailyWeather, ErrorState, ForecastData, LocationState, WeatherData } from "../types";
+import { DailyWeather, ForecastData, LocationState, WeatherData } from "../types";
+import { ColorModeContext } from "./Context";
 
 async function fetchCurrentLocation(): Promise<LocationState> {
   return new Promise((resolve, reject) => {
@@ -31,40 +32,6 @@ export const useGeolocationQuery = () => {
   });
 };
 
-export const useGeolocation2 = () => {
-  const [location, setLocation] = useState<LocationState>({ lat: null, lon: null });
-  const [error, setError] = useState<ErrorState>(null);
-
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser.');
-      return;
-    }
-
-    // Update state with the new location
-    const handleSuccess = (position: GeolocationPosition) => {
-      setLocation({
-        lat: position.coords.latitude,
-        lon: position.coords.longitude,
-      });
-    };
-
-    // Update state in case of an error
-    const handleError = (error: GeolocationPositionError) => {
-      setError('Unable to retrieve your location.');
-    };
-
-    // Start watching the position
-    const watcher = navigator.geolocation.watchPosition(handleSuccess, handleError);
-
-    return () => {
-      navigator.geolocation.clearWatch(watcher);
-    };
-  }, []);
-
-  return { location, error };
-};
-
 async function fetchWeatherForecast(lat: number | null | undefined, lon: number | null | undefined): Promise<ForecastData> {
   const url = `${process.env.REACT_APP_FORCAST_URL}?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}&units=metric`;
 
@@ -79,7 +46,6 @@ export const useWeatherForecast = () => {
 
   const queryClient = useQueryClient();
   const cachedLocation = queryClient.getQueryData<LocationState>(['geolocation']);
-  console.log('cachedLocation: ', cachedLocation)
 
   const { data: forecast, isLoading, error } = useQuery<ForecastData, Error>({
     queryKey: ['weatherForecast', cachedLocation?.lat, cachedLocation?.lon],
@@ -110,12 +76,31 @@ async function fetchWeatherData(date: string, lat: number | null | undefined, lo
   });
 }
 
+const convertCelsiusToFahrenheit = (celsius: number | undefined) => {
+  if (celsius === undefined) return undefined; // Or return a special value indicating the input was undefined
+  return (celsius * 9/5) + 32;
+};
+
+const displayTemperature = (tempCelsius: any, metricSystem: any) => metricSystem === 'F' ? `${(tempCelsius * 9 / 5) + 32}°F` : `${tempCelsius}°C`;
+
+const convertWindSpeed = (speed: any, system: any) => {
+  if(system === 'F') {
+    return (speed * 2.23694).toFixed(2) + " mph";
+  } else {
+    return speed + " m/s";
+  }
+};
+
 export const useDetailedWeather = () => {
   const { date } = useParams<{ date: string }>();
 
   const queryClient = useQueryClient();
   const cachedLocation = queryClient.getQueryData<LocationState>(['geolocation']);
-  console.log('cachedLocation: ', cachedLocation)
+
+  const { data: metricSystem } = useQuery({
+    queryKey: ['metricSystem'],
+    initialData: localStorage.getItem('metricSystem') || 'C'
+  });
 
   const queryInfo = useQuery<DailyWeather | undefined, Error>({
     queryKey: ['detailedWeather', date],
@@ -126,9 +111,48 @@ export const useDetailedWeather = () => {
   // Destructure after calling useQuery
   const { data: weather, isLoading, error } = queryInfo;
 
+  const displayDayTemp = metricSystem === 'C' ? weather?.temp.day : convertCelsiusToFahrenheit(weather?.temp.day);
+  const displayNightTemp = metricSystem === 'C' ? weather?.temp.night : convertCelsiusToFahrenheit(weather?.temp.night);
+
+  const temperatureDay = displayTemperature(weather?.feels_like.day, metricSystem);
+  const temperatureNight = displayTemperature(weather?.feels_like.night, metricSystem);
+  const windSpeedDisplay = convertWindSpeed(weather?.wind_speed, metricSystem);
+
   return { 
     weather, 
     isLoading, 
-    error: error ? error.message : null, // Ensuring error is formatted as a string or null
+    error: error ? error.message : null, 
+    displayDayTemp,
+    displayNightTemp,
+    temperatureDay,
+    temperatureNight,
+    metricSystem,
+    windSpeedDisplay
   };
+};
+
+export const useMetricSystem = () => {
+  const colorMode = useContext(ColorModeContext) || {};
+
+  const queryClient = useQueryClient();
+
+  const [metricSystem, setMetricSystem] = useState<'C' | 'F'>(() => {
+    // Initialize the metric system state from localStorage or default to 'C'
+    // Type assertion added here
+    const storedValue = localStorage.getItem('metricSystem');
+    return (storedValue === 'C' || storedValue === 'F' ? storedValue : 'C') as 'C' | 'F';
+  });
+
+  useEffect(() => {
+    // Update localStorage whenever the metric system state changes
+    localStorage.setItem('metricSystem', metricSystem);
+    queryClient.setQueryData(['metricSystem'], metricSystem);
+  }, [metricSystem, queryClient]);
+
+  const toggleMetricSystem = () => {
+    // Toggle the metric system between 'C' and 'F'
+    setMetricSystem(prevSystem => prevSystem === 'C' ? 'F' : 'C');
+  };
+
+  return { metricSystem, toggleMetricSystem, colorMode };
 };

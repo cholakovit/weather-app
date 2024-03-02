@@ -14,7 +14,7 @@ import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 export const DetailedWeather = () => {
 
-  const { weather, isLoading, error } = useDetailedWeather();
+  const { weather, isLoading, error, displayDayTemp, displayNightTemp, temperatureDay, temperatureNight, metricSystem, windSpeedDisplay } = useDetailedWeather();
   const { date } = useParams<{ date: string }>();
 
   if (isLoading) return <div>Loading...</div>;
@@ -26,7 +26,6 @@ export const DetailedWeather = () => {
   return (
     <>
       <H1Holder>Detailed Weather for {date} <CloudSharpIcon fontSize="large" /></H1Holder>
-
       <CenteredContainer>
         <TableContainerHolder>
           <Table>
@@ -39,11 +38,11 @@ export const DetailedWeather = () => {
             <TableBody>
               <StyledTableRow>
                 <StyledTableCell component="th" scope="row">Temperature:</StyledTableCell>
-                <StyledTableCell align="right">Day: {weather.temp.day}°C, Night: {weather.temp.night}°C</StyledTableCell>
+                <StyledTableCell align="right">Day: {displayDayTemp}°{metricSystem}, Night: {displayNightTemp}°{metricSystem}</StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
                 <StyledTableCell component="th" scope="row">Feels Like:</StyledTableCell>
-                <StyledTableCell align="right">Day: {weather.feels_like.day}°C, Night: {weather.feels_like.night}°C</StyledTableCell>
+                <StyledTableCell align="right">Day: {temperatureDay}, Night: {temperatureNight}</StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
                 <StyledTableCell component="th" scope="row">Humidity:</StyledTableCell>
@@ -51,7 +50,7 @@ export const DetailedWeather = () => {
               </StyledTableRow>
               <StyledTableRow>
                 <StyledTableCell component="th" scope="row">Wind Speed:</StyledTableCell>
-                <StyledTableCell align="right">{weather.wind_speed} m/s</StyledTableCell>
+                <StyledTableCell align="right">{windSpeedDisplay}</StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
                 <StyledTableCell component="th" scope="row">Weather Conditions:</StyledTableCell>

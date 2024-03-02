@@ -109,9 +109,9 @@ declare module "@mui/material/styles" {
   }
 }
 
-export interface ColorModeContextValue {}
-
-// Define a custom palette interface
+export interface ColorModeContextValue {
+  toggleColorMode: () => void;
+}
 export interface CustomPalette {
   primary: {
     main: string;
@@ -135,4 +135,8 @@ export interface ColorModeContextType {
 // for the Theme
 export interface colorModeProps {
   toggleColorMode?: any;
+};
+
+export interface metricModeProps {
+  toggleMetricMode?: any;
 };
