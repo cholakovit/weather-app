@@ -2,7 +2,7 @@
 import { F, FAILED_FETCH_FORCAST_DATA, GEOLOCATION_NOT_SUPPORTED_BROWSER, HTTP_ERROR_STATUS, UNABLE_RETRIEVE_LOCATION } from "../constants/common";
 
 // Types
-import { ForecastData, LocationState, WeatherData } from "../types";
+import { DailyWeather, ForecastData, HourlyWeather, LocationState, WeatherData } from "../types";
 
 export const displayTemperature = (tempCelsius: number, metricSystem: string): string => {
   return metricSystem === F
@@ -27,13 +27,13 @@ export async function fetchWeatherData(date: string, lat: number | null | undefi
   
   const data = await response.json();
 
-  const filteredHourlyData = data.hourly?.filter((hourlyWeather: any) => {
+  const filteredHourlyData = data.hourly?.filter((hourlyWeather: HourlyWeather) => {
     const hourlyTimestamp = hourlyWeather.dt * 1000; // Convert to milliseconds
     const isSameDay = hourlyTimestamp >= targetDayStart && hourlyTimestamp <= targetDayEnd;
     return isSameDay;
   }) ?? [];
 
-  const dailyDataForDate = data.daily?.find((daily: any) => {
+  const dailyDataForDate = data.daily?.find((daily: DailyWeather) => {
     const dailyDate = new Date(daily.dt * 1000);
     return dailyDate >= new Date(targetDayStart) && dailyDate <= new Date(targetDayEnd);
   });

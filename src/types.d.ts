@@ -25,7 +25,7 @@ type DailyWeather = {
   sunset: number; 
   rain?: number | null;
   snow?: number | null;
-  hourly?: any
+  hourly?: number | null;
 }
 
 type HourlyWeather = {
@@ -135,11 +135,11 @@ export interface ColorModeContextType {
 
 // for the Theme
 export interface colorModeProps {
-  toggleColorMode?: any;
+  toggleColorMode?: string | null;
 };
 
 export interface metricModeProps {
-  toggleMetricMode?: any;
+  toggleMetricMode?: string | null;
 };
 
 export interface AlertWithTimeoutHookProps {
