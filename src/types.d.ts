@@ -75,7 +75,7 @@ type LocationState = {
 type ErrorState = string | null;
 
 declare module "@mui/material/styles" {
-  type PaletteColor = {
+  interface PaletteColor {
     lighter?: string;
     light: string;
     main: string;
@@ -109,16 +109,16 @@ declare module "@mui/material/styles" {
   }
 
   // Add any other customizations or extensions to the ThemeOptions interface if needed
-  type ThemeOptions = {
+  interface ThemeOptions {
     palette?: PaletteOptions;
     // Add theme options here, if any
   }
 }
 
-export type ColorModeContextValue = {
+export interface ColorModeContextValue {
   toggleColorMode: () => void;
 }
-export type CustomPalette = {
+export interface CustomPalette {
   primary: {
     main: string;
     black: string;
@@ -128,15 +128,15 @@ export type CustomPalette = {
   mode: PaletteMode;
 }
 
-export type ColorModeContextType = {
+export interface ColorModeContextType {
   toggleColorMode: () => void;
 }
 
 // for the Theme
-export type colorModeProps = {
+export interface colorModeProps {
   toggleColorMode?: any;
 };
 
-export type metricModeProps = {
+export interface metricModeProps {
   toggleMetricMode?: any;
 };
