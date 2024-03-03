@@ -24,10 +24,25 @@ type DailyWeather = {
   sunset: number; 
   rain?: number | null;
   snow?: number | null;
+  hourly?: any
 }
+
+type HourlyWeather = {
+  dt: number; // Timestamp for the hour
+  temp: number; // Actual temperature
+  feels_like: number; // "Feels like" temperature
+  weather: [
+    {
+      main: string; // Main weather condition (e.g., "Clouds", "Rain")
+      description: string; // More detailed weather condition description
+    }
+  ];
+  // Include any other properties you might need from the hourly weather data
+};
 
 type WeatherData = {
   daily: DailyWeather[];
+  hourly?: HourlyWeather[];
 }
 
 type WeatherInfo = {
@@ -59,17 +74,8 @@ type LocationState = {
 
 type ErrorState = string | null;
 
-
-
-
-
-
-
-
-
-
 declare module "@mui/material/styles" {
-  interface PaletteColor {
+  type PaletteColor = {
     lighter?: string;
     light: string;
     main: string;
@@ -80,7 +86,7 @@ declare module "@mui/material/styles" {
     white?: string;
   }
 
-  interface Palette {
+  type Palette = {
     primary: PaletteColor;
   }
 
@@ -103,16 +109,16 @@ declare module "@mui/material/styles" {
   }
 
   // Add any other customizations or extensions to the ThemeOptions interface if needed
-  interface ThemeOptions {
+  type ThemeOptions = {
     palette?: PaletteOptions;
     // Add theme options here, if any
   }
 }
 
-export interface ColorModeContextValue {
+export type ColorModeContextValue = {
   toggleColorMode: () => void;
 }
-export interface CustomPalette {
+export type CustomPalette = {
   primary: {
     main: string;
     black: string;
@@ -122,21 +128,15 @@ export interface CustomPalette {
   mode: PaletteMode;
 }
 
-export interface ColorModeContextType {
+export type ColorModeContextType = {
   toggleColorMode: () => void;
 }
 
-
-
-
-
-
-
 // for the Theme
-export interface colorModeProps {
+export type colorModeProps = {
   toggleColorMode?: any;
 };
 
-export interface metricModeProps {
+export type metricModeProps = {
   toggleMetricMode?: any;
 };
