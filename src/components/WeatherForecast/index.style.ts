@@ -5,9 +5,11 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 
-export const H1Holder = styled('h1')(({ theme }) => ({
+export const H1Holder = styled('div')(({ theme }) => ({
   margin: '100px 0 0 0',
-  fontWeight: '100'
+  fontWeight: '100',
+  fontSize: '2em',
+  lineHeight: '1.2',
 }));
 
 export const ItemsContainer = styled('div')(({ theme }) => ({
@@ -54,26 +56,23 @@ export const Content = styled(Box)({
 
 export const NameHolder = styled(Box)({
   height: '30px',
-  overflow: 'hdden',
-  color: '#fff',
+  overflow: 'hidden',
   textDecoration: 'none'
 });
 
 export const TemperatureHolder = styled(Box)({
   height: '30px',
   overflow: 'hdden',
-  color: '#fff',
   textDecoration: 'none'
 });
 
 export const ConditionHolder = styled(Box)({
   height: '30px',
   overflow: 'hdden',
-  color: '#fff',
   textDecoration: 'none'
 });
 
 export const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
-  color: theme.palette.primary.white
+  color: theme.palette.primary.lighter
 }));

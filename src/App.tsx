@@ -2,7 +2,6 @@ import { FC, Suspense, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { WeatherForecast } from './components/WeatherForecast';
 import { DetailedWeather } from './components/DetailedWeather';
-import './App.css';
 
 import { useGeolocationQuery } from './helper/hooks';
 import Header from './components/Header';
@@ -13,6 +12,7 @@ import { ColorModeContextType } from './types';
 import { useWeatherTheme } from './helper/weatherTheme';
 import AlertMessage from './components/Alert';
 import Skeletons from './components/Skeletons';
+import { WeatherApp } from './index.style';
 
 const App: FC = () => {
 
@@ -29,7 +29,7 @@ const App: FC = () => {
   const theme = useWeatherTheme(mode)
   
   return (
-    <div className="App">
+    <WeatherApp>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           {error ? (
@@ -51,7 +51,7 @@ const App: FC = () => {
           )}
         </ThemeProvider>
       </ColorModeContext.Provider>
-    </div>
+    </WeatherApp>
   );
 }
 

@@ -17,9 +17,11 @@ export const useWeatherTheme = (mode: PaletteMode) => {
                 ...(mode === "light"
                   ? {
                       backgroundColor: colors.grey[100],
+                      color: colors.grey[900],
                     }
                   : {
                       backgroundColor: colors.orange[900],
+                      color: colors.grey[100],
                     }),
               },
             },
@@ -30,6 +32,7 @@ export const useWeatherTheme = (mode: PaletteMode) => {
             main: mode === "light" ? colors.grey[600] : colors.orange[900],
             black: mode === "light" ? colors.grey[400] : colors.grey[900],
             white: mode === "light" ? colors.grey[800] : colors.grey[600],
+            lighter: mode === "light" ? colors.grey[800] : colors.grey[400],
             iconColor: mode === "light" ? colors.grey[900] : colors.grey[100],
           },
           mode, // Add the mode property to the palette object
