@@ -19,14 +19,14 @@ const Header = () => {
           label=""
           onClick={colorMode.toggleColorMode}
           control={<MaterialUISwitch defaultChecked />}
-          data-testid="button"
+          data-testid="material-ui-switch"
         />
 
         <WeatherFormControlLabel
           label=""
           onClick={toggleMetricSystem}
           control={<MetricUISwitch checked={metricSystem === 'C'} />}
-          data-testid="button"
+          data-testid="metric-ui-switch"
         />
       </HeaderContainer>
     </WeatherAppBar>

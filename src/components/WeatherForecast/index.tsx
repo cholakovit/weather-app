@@ -6,9 +6,9 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import ThunderstormSharpIcon from '@mui/icons-material/ThunderstormSharp';
 import DeviceThermostatSharpIcon from '@mui/icons-material/DeviceThermostatSharp';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
-import AlertMessage from "../Alert/Alert";
-import { NETWORK_RESPONS_NOT_OK } from "../../constants/common";
-import Skeletons from "../Skeletons/Skeletons";
+import AlertMessage from "../Alert";
+import { CLEAR, CLOUDS, CONDITION, DATE, DAYS_WEATHER_FORCAST, NETWORK_RESPONS_NOT_OK, RAIN, TEMPERATURE } from "../../constants/common";
+import Skeletons from "../Skeletons";
 import { displayTemperature } from "../../helper/fn";
 
 export const WeatherForecast = () => {
@@ -19,7 +19,7 @@ export const WeatherForecast = () => {
 
   return (
     <>
-      <H1Holder>5 Day Weather Forecast in {forecast?.city.name} <CloudSharpIcon fontSize="large" /></H1Holder>
+      <H1Holder> {DAYS_WEATHER_FORCAST + ' ' + forecast?.city.name} <CloudSharpIcon fontSize="large" /></H1Holder>
       <ItemsContainer>
         {error ? (
           <AlertMessage alert={NETWORK_RESPONS_NOT_OK} type="error" />
@@ -33,13 +33,13 @@ export const WeatherForecast = () => {
               <ItemHolder role="provider" key={index}>
                 <Content>
                   <StyledLink to={`/details/${encodeURIComponent(day.dt_txt)}`} key={index}>
-                    <NameHolder>Date: {day.dt_txt} <CalendarMonthSharpIcon /></NameHolder>
-                    <TemperatureHolder>Temperature: {displayTemperature(day.main.temp, metricSystem)} <DeviceThermostatSharpIcon /></TemperatureHolder>
+                    <NameHolder>{DATE + day.dt_txt} <CalendarMonthSharpIcon /></NameHolder>
+                    <TemperatureHolder>{TEMPERATURE + ': ' + displayTemperature(day.main.temp, metricSystem)} <DeviceThermostatSharpIcon /></TemperatureHolder>
                     <ConditionHolder>
-                      Condition: 
-                      {day.weather[0].main === 'Clouds' && (<>{day.weather[0].main} <CloudSharpIcon /></>)}
-                      {day.weather[0].main === 'Rain' && (<>{day.weather[0].main} <ThunderstormSharpIcon /></>)}
-                      {day.weather[0].main === 'Clear' && (<>{day.weather[0].main} <WbSunnyIcon /></>)}
+                      {CONDITION + ': '} 
+                      {day.weather[0].main === CLOUDS && (<>{day.weather[0].main} <CloudSharpIcon /></>)}
+                      {day.weather[0].main === RAIN && (<>{day.weather[0].main} <ThunderstormSharpIcon /></>)}
+                      {day.weather[0].main === CLEAR && (<>{day.weather[0].main} <WbSunnyIcon /></>)}
                     </ConditionHolder>
                   </StyledLink>
                 </Content>

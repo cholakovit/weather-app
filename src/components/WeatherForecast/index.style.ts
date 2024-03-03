@@ -31,14 +31,20 @@ export const ItemHolder = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   maxHeight: '150px',
   [theme.breakpoints.down('sm')]: {
-    width: '28%' // Set the width to 30% for smaller screens (down to sm breakpoint)
+    width: '90%' 
   },
   [theme.breakpoints.between('sm', 'md')]: {
-    width: '28%' // Around 30% width for tablets
+    width: '40%' 
   },
   [theme.breakpoints.between('md', 'lg')]: {
-    width: '21%' // Set the width to 25% for tablets (between md and lg breakpoints)
-  }
+    width: '35%' 
+  },
+  [theme.breakpoints.up('lg')]: {
+    width: '23%', 
+  },
+  [theme.breakpoints.up('xl')]: {
+    width: '18%', 
+  },
 }));
 
 export const Content = styled(Box)({
@@ -70,5 +76,4 @@ export const ConditionHolder = styled(Box)({
 export const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.primary.white
-  //color: '#fff'
 }));

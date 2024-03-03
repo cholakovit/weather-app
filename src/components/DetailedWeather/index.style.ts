@@ -1,33 +1,9 @@
 // MUI Elements
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { Paper, TableRow } from '@mui/material';
-import Box from '@mui/material/Box';
 
 // Styled Elements
 import { styled } from '@mui/material/styles';
-
-
-export const DetailedItemHolder = styled(Box)(({ theme }) => ({
-  padding: '10px',
-  marginBottom: '20px',
-  marginTop: '20px',
-
-  backgroundColor: theme.palette.primary.black,
-  width: '24%',
-  border: '1px solid ' + theme.palette.primary.white,
-  marginRight: '20px',
-  overflow: 'hidden',
-  maxHeight: '650px',
-  [theme.breakpoints.down('sm')]: {
-    width: '28%' // Set the width to 30% for smaller screens (down to sm breakpoint)
-  },
-  [theme.breakpoints.between('sm', 'md')]: {
-    width: '28%' // Around 30% width for tablets
-  },
-  [theme.breakpoints.between('md', 'lg')]: {
-    width: '21%' // Set the width to 25% for tablets (between md and lg breakpoints)
-  }
-}));
 
 export const BoxHolder = styled('div')(({ theme }) => ({
   display: 'block',
@@ -41,11 +17,11 @@ export const CenteredContainer = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center', 
-  marginTop: '50px'
+  margin: '50px 0px'
 });
 
 export const TableContainerHolder = styled(Paper)(({ theme }) => ({
-  width: '500px',
+  width: '550px',
 }));
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({

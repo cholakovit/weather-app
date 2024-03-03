@@ -1,6 +1,6 @@
 import { render, screen, act } from '@testing-library/react';
 
-import AlertMessage from './Alert';
+import AlertMessage from '.';
 import { ERROR, INITIAL_ALERT, SUCCESS } from '../../constants/common';
 
 // Mocking the setTimeout function for Jest

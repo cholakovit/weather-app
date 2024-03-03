@@ -1,5 +1,6 @@
 import { PaletteMode } from "@mui/material";
 import { PaletteOptions } from "@mui/material/styles";
+import { AlertColor } from "@mui/material";
 
 type DailyWeather = {
   dt: number;
@@ -140,3 +141,27 @@ export interface colorModeProps {
 export interface metricModeProps {
   toggleMetricMode?: any;
 };
+
+export interface AlertWithTimeoutHookProps {
+  initialAlert: string | null
+  timeout: number
+}
+
+export interface AlertMessageProps {
+  alert: string | null;
+  type: AlertColor;
+}
+
+// for the Skeleton
+interface SkeletonProps {
+  flag: number;
+  width: number;
+  height: number;
+  number: number;
+};
+
+interface UseMetricSystemReturn {
+  metricSystem: 'C' | 'F';
+  toggleMetricSystem: () => void;
+  colorMode: { toggleColorMode: () => void };
+}

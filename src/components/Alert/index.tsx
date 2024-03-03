@@ -5,10 +5,10 @@ import React from 'react';
 import { Alert, AlertColor } from '@mui/material';
 
 // Custom Hooks
-import { useAlertWithTimeout } from './Alert.hooks';
+import { useAlertWithTimeout } from '../../helper/hooks';
 
 // Interfaces
-import { AlertMessageProps } from './Alert.types';
+import { AlertMessageProps } from '../../types';
 
 const AlertMessage: React.FC<AlertMessageProps> = ({ alert, type }) => {
   

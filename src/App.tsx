@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useState } from 'react';
+import { FC, Suspense, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { WeatherForecast } from './components/WeatherForecast';
 import { DetailedWeather } from './components/DetailedWeather';
@@ -11,8 +11,10 @@ import { DARK, LIGHT } from './constants/common';
 import { ColorModeContext } from './helper/Context';
 import { ColorModeContextType } from './types';
 import { useWeatherTheme } from './helper/weatherTheme';
+import AlertMessage from './components/Alert';
+import Skeletons from './components/Skeletons';
 
-const App: React.FC = () => {
+const App: FC = () => {
 
   const { isLoading, error } = useGeolocationQuery();
 
@@ -25,30 +27,31 @@ const App: React.FC = () => {
   }),[])
   
   const theme = useWeatherTheme(mode)
-
-  if (isLoading) return <div>Loading Geolocation...</div>;
-
-  if (error) return <p>Geolocation Error: {error.message}</p>;
-
+  
   return (
-    
-      <div className="App">
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
+    <div className="App">
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          {error ? (
+            <AlertMessage alert={`Geolocation Error: ${(error as Error).message}`} type="error" />
+          ) : isLoading ? (<Skeletons flag={1} width={250} height={120} number={1} />) : (
+            <>
+              <CssBaseline />
 
-            <Header />
-            <Suspense fallback={<div>Loading location...</div>}>
-              <Router>
-                <Routes>
-                  <Route path="/" element={<WeatherForecast />} />
-                  <Route path="/details/:date" element={<DetailedWeather />} />
-                </Routes>
-              </Router>
-            </Suspense>
-          </ThemeProvider>
-        </ColorModeContext.Provider>
-      </div>
+              <Header />
+              <Suspense fallback={<div>Loading Geolocation...</div>}>
+                <Router>
+                  <Routes>
+                    <Route path="/" element={<WeatherForecast />} />
+                    <Route path="/details/:date" element={<DetailedWeather />} />
+                  </Routes>
+                </Router>
+              </Suspense>
+            </>
+          )}
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </div>
   );
 }
 

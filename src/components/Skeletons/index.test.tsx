@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import Skeletons from './Skeletons';
+import Skeletons from '.';
 
 describe('Skeletons component', () => {
   it('renders multiple skeletons when flag is 1', () => {

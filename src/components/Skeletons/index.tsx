@@ -2,10 +2,11 @@
 import React, { FC } from "react";
 
 // Styled Elements
-import { SkeletonBox } from "./Skeletons.styles";
+import { SkeletonBox } from "./index.styles";
 
 // MUI Elements
 import { Skeleton } from "@mui/material"; 
+import { SkeletonProps } from "../../types";
 
 const Skeletons: FC<SkeletonProps> = ({ flag, width, height, number }) => {
 

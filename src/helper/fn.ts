@@ -1,8 +1,9 @@
+import { F, FAILED_FETCH_FORCAST_DATA, GEOLOCATION_NOT_SUPPORTED_BROWSER, HTTP_ERROR_STATUS, UNABLE_RETRIEVE_LOCATION } from "../constants/common";
 import { ForecastData, LocationState, WeatherData } from "../types";
 
 
 export const displayTemperature = (tempCelsius: number, metricSystem: string): string => {
-  return metricSystem === 'F'
+  return metricSystem === F
     ? `${Math.round((tempCelsius * 9 / 5) + 32)}°F` // Convert to Fahrenheit and round the result
     : `${Math.round(tempCelsius)}°C`; // Round Celsius for consistency
 };
@@ -17,7 +18,7 @@ export async function fetchWeatherData(date: string, lat: number | null | undefi
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    throw new Error(`${HTTP_ERROR_STATUS} ${response.status}`);
   }
   
   const data = await response.json();
@@ -50,7 +51,7 @@ export async function fetchWeatherForecast(lat: number | null | undefined, lon: 
   ]);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch forecast data');
+    throw new Error(FAILED_FETCH_FORCAST_DATA);
   }
   return response.json();
 }
@@ -58,7 +59,7 @@ export async function fetchWeatherForecast(lat: number | null | undefined, lon: 
 export async function fetchCurrentLocation(): Promise<LocationState> {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error('Geolocation is not supported by your browser.'));
+      reject(new Error(GEOLOCATION_NOT_SUPPORTED_BROWSER));
     } else {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -68,7 +69,7 @@ export async function fetchCurrentLocation(): Promise<LocationState> {
           });
         },
         (error) => {
-          reject(new Error('Unable to retrieve your location.'));
+          reject(new Error(UNABLE_RETRIEVE_LOCATION));
         }
       );
     }

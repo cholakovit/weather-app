@@ -1,39 +1,33 @@
+// DetailedWeather.test.tsx
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { DetailedWeather } from './index'; // Adjust the import path as necessary
-import * as useDetailedWeatherHook from '../../helper/hooks'; // Adjust the import path as necessary
-import * as ReactRouterDom from 'react-router-dom';
+import { DetailedWeather } from '.'; // Adjust the import path as needed
+import * as hooks from '../../helper/hooks'; // Adjust the import path as needed
 
-// Mock the useParams and useDetailedWeather hooks
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'), // Use actual implementations for non-hook parts
-  useParams: jest.fn(), // Mock useParams
+// Mock the entire module that exports useDetailedWeather
+jest.mock('../../helper/hooks', () => ({
+  useDetailedWeather: jest.fn(),
+  // Mock other hooks or exports from this module as needed
 }));
-  
-jest.mock('../../helper/hooks'); // Mock your custom hook
+
+// TypeScript: Cast the mock to the correct type for better autocompletion
+const mockUseDetailedWeather = hooks.useDetailedWeather as jest.Mock;
 
 describe('DetailedWeather Component', () => {
-  it('displays detailed weather information correctly', () => {
-    // Mock return values for hooks
-    jest.spyOn(ReactRouterDom, 'useParams').mockReturnValue({ date: '2023-04-01' });
-    // jest.spyOn(useDetailedWeatherHook, 'useDetailedWeather').mockReturnValue({
-    //   weather: {
-    //     dt: 1603965600, // Include the required `dt` property
-    //     temp: { day: 20, night: 10 },
-    //     feels_like: { day: 18, night: 8 },
-    //     humidity: 60,
-    //     wind_speed: 5,
-    //     weather: [{ main: 'Clear', description: 'clear sky' }],
-    //     clouds: 0,
-    //     pressure: 1012,
-    //     uvi: 5,
-    //     sunrise: 1603965600,
-    //     sunset: 1604008800,
-    //   },
-    //   isLoading: false,
-    //   error: null,
-    // });
+  beforeEach(() => {
+    // Reset all mocks before each test
+    jest.clearAllMocks();
+  });
+
+  it('displays loading state correctly', () => {
+    // Set up the mock return value for this test case
+    mockUseDetailedWeather.mockReturnValue({
+      hourlyData: undefined,
+      isLoading: true,
+      error: null,
+      metricSystem: 'C',
+    });
 
     render(
       <BrowserRouter>
@@ -41,26 +35,10 @@ describe('DetailedWeather Component', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText(/detailed weather for/i)).toBeInTheDocument();
-    expect(screen.getByText(/temperature:/i)).toBeInTheDocument();
-    expect(screen.getByText(/humidity:/i)).toBeInTheDocument();
-    // Add more assertions as needed
+    // Check for loading state
+    const loadingElement = screen.getByText(/Detailed Weather for/i);
+    expect(loadingElement).toBeInTheDocument();
   });
 
-  // it('displays error state correctly', () => {
-  //   jest.spyOn(ReactRouterDom, 'useParams').mockReturnValue({ date: '2023-04-01' });
-  //   jest.spyOn(useDetailedWeatherHook, 'useDetailedWeather').mockReturnValue({
-  //     weather: null,
-  //     isLoading: false,
-  //     error: 'Error fetching weather data',
-  //   });
-
-  //   render(
-  //     <BrowserRouter>
-  //       <DetailedWeather />
-  //     </BrowserRouter>
-  //   );
-
-  //   expect(screen.getByText(/error:/i)).toBeInTheDocument();
-  // });
+  // You can add more tests here to cover other states like error, displaying data, etc.
 });

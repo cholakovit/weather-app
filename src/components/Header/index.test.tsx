@@ -1,15 +1,36 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './'; // Adjust the import path accordingly
+import * as hooks from '../../helper/hooks'; // Adjust the import path accordingly
+import { UseMetricSystemReturn } from '../../types';
 
-import * as hooks from '../../helper/hooks';
-
-// Explicitly declare the jest mocks with the correct types
+// Mocking the useMetricSystem hook
 jest.mock('../../helper/hooks', () => ({
-  useGeolocation: jest.fn(),
-  useWeatherForecast: jest.fn(),
+  useMetricSystem: jest.fn(),
 }));
 
-describe('WeatherForecast Component', () => {
+const mockedUseMetricSystem = hooks.useMetricSystem as jest.Mock<UseMetricSystemReturn>;
 
+describe('Header Component', () => {
+  beforeEach(() => {
+    mockedUseMetricSystem.mockImplementation(() => ({
+      metricSystem: 'C',
+      toggleMetricSystem: jest.fn(),
+      colorMode: { toggleColorMode: jest.fn() },
+    }));
+  });
+
+  it('renders both switches', () => {
+    render(<Header />);
+
+    const materialUiSwitch = screen.getByTestId('material-ui-switch');
+    const metricUiSwitch = screen.getByTestId('metric-ui-switch');
+
+    expect(materialUiSwitch).toBeInTheDocument();
+    expect(metricUiSwitch).toBeInTheDocument();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 });
