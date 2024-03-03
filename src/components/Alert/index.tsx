@@ -1,31 +1,26 @@
-// React hooks
-import React from 'react';
+// React Elements
+import { FC } from "react";
 
 // MUI Elements
-import { Alert, AlertColor } from '@mui/material';
+import { Alert, AlertColor } from "@mui/material";
 
 // Custom Hooks
-import { useAlertWithTimeout } from '../../helper/hooks';
+import { useAlertWithTimeout } from "../../helper/hooks";
 
-// Interfaces
-import { AlertMessageProps } from '../../types';
+// Types
+import { AlertMessageProps } from "../../types";
 
-const AlertMessage: React.FC<AlertMessageProps> = ({ alert, type }) => {
-  
-  // Use the custom hook to handle the timeout logic
+const AlertMessage: FC<AlertMessageProps> = ({ alert, type }) => {
   const displayAlert: string | null = useAlertWithTimeout({
     initialAlert: alert,
-    timeout: 30000
+    timeout: 30000,
   });
 
-  return (
-    // Conditionally render the Alert component if 'alert' has a value
-    displayAlert ? (
-      <Alert severity={type as AlertColor} data-testid="alert">
-        {displayAlert}
-      </Alert>
-    ) : null
-  );
+  return displayAlert ? (
+    <Alert severity={type as AlertColor} data-testid="alert">
+      {displayAlert}
+    </Alert>
+  ) : null;
 };
 
 export default AlertMessage;

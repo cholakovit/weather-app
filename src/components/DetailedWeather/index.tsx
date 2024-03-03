@@ -1,5 +1,11 @@
+// React Elements
 import { useParams } from "react-router-dom";
+
+// Hooks
 import { useDetailedWeather } from "../../helper/hooks";
+import { displayTemperature } from "../../helper/fn";
+
+// MUI Elements
 import CloudSharpIcon from "@mui/icons-material/CloudSharp";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,11 +13,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import StyledTableCell from "@mui/material/TableCell";
 import StyledTableRow from "@mui/material/TableRow";
-import AlertMessage from "../Alert";
-import Skeletons from "../Skeletons";
 import { H1Holder, StyledLink } from "../WeatherForecast/index.style";
 import { CenteredContainer, TableContainerHolder } from "./index.style";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
+
+// Components
+import AlertMessage from "../Alert";
+import Skeletons from "../Skeletons";
+
+// Constants
 import {
   BACK_FORCAST,
   CONDITION,
@@ -21,7 +31,6 @@ import {
   TEMPERATURE,
   TIME,
 } from "../../constants/common";
-import { displayTemperature } from "../../helper/fn";
 
 export const DetailedWeather = () => {
   const { hourlyData, isLoading, error, metricSystem } = useDetailedWeather();

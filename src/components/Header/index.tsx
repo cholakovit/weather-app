@@ -1,13 +1,14 @@
-// Styled Elements
+// MUI Elements
 import {
   MaterialUISwitch,
   WeatherFormControlLabel,
   WeatherAppBar,
   HeaderContainer,
-  MetricUISwitch
-} from './index.style';
+  MetricUISwitch,
+} from "./index.style";
 
-import { useMetricSystem } from '../../helper/hooks';
+// Hooks
+import { useMetricSystem } from "../../helper/hooks";
 
 const Header = () => {
   const { metricSystem, toggleMetricSystem, colorMode } = useMetricSystem();
@@ -25,7 +26,7 @@ const Header = () => {
         <WeatherFormControlLabel
           label=""
           onClick={toggleMetricSystem}
-          control={<MetricUISwitch checked={metricSystem === 'C'} />}
+          control={<MetricUISwitch checked={metricSystem === "C"} />}
           data-testid="metric-ui-switch"
         />
       </HeaderContainer>
