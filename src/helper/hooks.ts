@@ -1,10 +1,20 @@
+// React Elements
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { AlertWithTimeoutHookProps, ForecastData, LocationState, WeatherData } from "../types";
 import { ColorModeContext } from "./Context";
+
+// Tanstack Query Elements
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+// Types
+import { AlertWithTimeoutHookProps, ForecastData, LocationState, WeatherData } from "../types";
+
+// Hooks
 import { fetchCurrentLocation, fetchWeatherData, fetchWeatherForecast } from "./fn";
-import { C, DETAILED_WEATHER, F, GEOLOCATION, METRIC_SYSTEM, WEATHER_FORCAST } from "../constants/common";
+
+// Constants
+import { C, DATE_UNDEFINED, DETAILED_WEATHER, F, GEOLOCATION, METRIC_SYSTEM, WEATHER_FORCAST } from "../constants/common";
+
 
 export const useGeolocationQuery = () => {
   return useQuery<LocationState, Error>({
@@ -21,7 +31,7 @@ export const useWeatherForecast = () => {
 
   const { data: metricSystem } = useQuery({
     queryKey: [METRIC_SYSTEM],
-    initialData: localStorage.getItem('metricSystem') || C
+    initialData: localStorage.getItem(METRIC_SYSTEM) || C
   });
 
   const { data: forecast, isLoading, error } = useQuery<ForecastData, Error>({
@@ -44,9 +54,11 @@ export const useDetailedWeather = () => {
     initialData: localStorage.getItem(METRIC_SYSTEM) || C
   });
 
+  console.log('date: ', date)
+
   const { data: weatherData, isLoading, error } = useQuery<WeatherData, Error>({
     queryKey: [DETAILED_WEATHER, date],
-    queryFn: () => date ? fetchWeatherData(date, cachedLocation?.lat, cachedLocation?.lon) : Promise.reject(new Error("Date is undefined")),
+    queryFn: () => date ? fetchWeatherData(date, cachedLocation?.lat, cachedLocation?.lon) : Promise.reject(new Error(DATE_UNDEFINED)),
     enabled: !!date,
   });
 

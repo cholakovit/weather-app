@@ -36,6 +36,8 @@ export const DetailedWeather = () => {
   const { hourlyData, isLoading, error, metricSystem } = useDetailedWeather();
   const { date } = useParams<{ date: string }>();
 
+  console.log('hourlyData: ', hourlyData)
+
   return (
     <>
       <H1Holder>

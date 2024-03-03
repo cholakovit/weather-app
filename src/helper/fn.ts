@@ -1,6 +1,8 @@
+// Constants
 import { F, FAILED_FETCH_FORCAST_DATA, GEOLOCATION_NOT_SUPPORTED_BROWSER, HTTP_ERROR_STATUS, UNABLE_RETRIEVE_LOCATION } from "../constants/common";
-import { ForecastData, LocationState, WeatherData } from "../types";
 
+// Types
+import { ForecastData, LocationState, WeatherData } from "../types";
 
 export const displayTemperature = (tempCelsius: number, metricSystem: string): string => {
   return metricSystem === F
@@ -11,6 +13,8 @@ export const displayTemperature = (tempCelsius: number, metricSystem: string): s
 export async function fetchWeatherData(date: string, lat: number | null | undefined, lon: number | null | undefined): Promise<WeatherData> {
   const decodedDate = decodeURIComponent(date);
   const url = `${process.env.REACT_APP_ONECALL}?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}&exclude=minutely,alerts&units=metric`;
+
+  console.log('url: ', url)
 
   const targetDayStart = new Date(decodedDate).setHours(0, 0, 0, 0);
   const targetDayEnd = new Date(decodedDate).setHours(23, 59, 59, 999);
