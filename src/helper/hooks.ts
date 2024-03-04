@@ -104,3 +104,20 @@ export const useAlertWithTimeout = ({ initialAlert, timeout }: AlertWithTimeoutH
 
   return alert;
 };
+
+export const usePrefetchWeatherData = () => {
+  const queryClient = useQueryClient();
+
+  const prefetchWeatherData = (date: string) => {
+    const cachedLocation = queryClient.getQueryData<LocationState>([GEOLOCATION]);
+
+    if (cachedLocation) {
+      queryClient.prefetchQuery({
+        queryKey: ['detailedWeather', date],
+        queryFn: () => fetchWeatherData(date, cachedLocation.lat, cachedLocation.lon),
+      });
+    }
+  };
+
+  return prefetchWeatherData;
+};

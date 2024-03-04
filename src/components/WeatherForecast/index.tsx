@@ -1,5 +1,5 @@
 // Hooks
-import { useWeatherForecast } from "../../helper/hooks";
+import { usePrefetchWeatherData, useWeatherForecast } from "../../helper/hooks";
 import { displayTemperature } from "../../helper/fn";
 
 // MUI Elements
@@ -37,6 +37,7 @@ import {
 
 export const WeatherForecast = () => {
   const { forecast, isLoading, error, metricSystem } = useWeatherForecast();
+  const prefetchWeatherData = usePrefetchWeatherData();
 
   const dailyForecasts = forecast?.list.filter((f) =>
     f.dt_txt.includes("12:00:00")
@@ -64,6 +65,7 @@ export const WeatherForecast = () => {
                   <StyledLink
                     to={`/details/${encodeURIComponent(day.dt_txt)}`}
                     key={index}
+                    onMouseEnter={() => prefetchWeatherData(day.dt_txt)}
                   >
                     <NameHolder>
                       {DATE + day.dt_txt} <CalendarMonthSharpIcon />
