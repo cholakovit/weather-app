@@ -109,17 +109,15 @@ declare module "@mui/material/styles" {
     };
   }
 
-  // Add any other customizations or extensions to the ThemeOptions interface if needed
-  interface ThemeOptions {
+  type ThemeOptions = {
     palette?: PaletteOptions;
-    // Add theme options here, if any
   }
 }
 
-export interface ColorModeContextValue {
+export type ColorModeContextValue = {
   toggleColorMode: () => void;
 }
-export interface CustomPalette {
+export type CustomPalette = {
   primary: {
     main: string;
     black: string;
@@ -129,38 +127,38 @@ export interface CustomPalette {
   mode: PaletteMode;
 }
 
-export interface ColorModeContextType {
+export type ColorModeContextType = {
   toggleColorMode: () => void;
 }
 
 // for the Theme
-export interface colorModeProps {
+export type colorModeProps = {
   toggleColorMode?: string | null;
 };
 
-export interface metricModeProps {
+export type metricModeProps = {
   toggleMetricMode?: string | null;
 };
 
-export interface AlertWithTimeoutHookProps {
+export type AlertWithTimeoutHookProps = {
   initialAlert: string | null
   timeout: number
 }
 
-export interface AlertMessageProps {
+export type AlertMessageProps = {
   alert: string | null;
   type: AlertColor;
 }
 
 // for the Skeleton
-interface SkeletonProps {
+type SkeletonProps = {
   flag: number;
   width: number;
   height: number;
   number: number;
 };
 
-interface UseMetricSystemReturn {
+type UseMetricSystemReturn = {
   metricSystem: 'C' | 'F';
   toggleMetricSystem: () => void;
   colorMode: { toggleColorMode: () => void };

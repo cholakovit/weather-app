@@ -14,8 +14,6 @@ export async function fetchWeatherData(date: string, lat: number | null | undefi
   const decodedDate = decodeURIComponent(date);
   const url = `${process.env.REACT_APP_ONECALL}?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}&exclude=minutely,alerts&units=metric`;
 
-  console.log('url: ', url)
-
   const targetDayStart = new Date(decodedDate).setHours(0, 0, 0, 0);
   const targetDayEnd = new Date(decodedDate).setHours(23, 59, 59, 999);
 

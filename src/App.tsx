@@ -19,7 +19,7 @@ import { useWeatherTheme } from "./helper/weatherTheme";
 import { WeatherApp } from "./index.style";
 
 // Constants
-import { DARK, LIGHT } from "./constants/common";
+import { DARK, GEOLOCATION_ERROR, LIGHT } from "./constants/common";
 
 // Types
 import { ColorModeContextType } from "./types";
@@ -45,7 +45,7 @@ const App: FC = () => {
         <ThemeProvider theme={theme}>
           {error ? (
             <AlertMessage
-              alert={`Geolocation Error: ${(error as Error).message}`}
+              alert={`${GEOLOCATION_ERROR} ${(error as Error).message}`}
               type="error"
             />
           ) : isLoading ? (

@@ -27,3 +27,4 @@ export const GEOLOCATION_NOT_SUPPORTED_BROWSER = "Geolocation is not supported b
 export const FAILED_FETCH_FORCAST_DATA = "Failed to fetch forecast data."
 export const HTTP_ERROR_STATUS = "HTTP error! status: "
 export const DATE_UNDEFINED = "Date is undefined"
+export const GEOLOCATION_ERROR = "Geolocation Error: "
