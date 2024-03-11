@@ -19,19 +19,19 @@ export const ButtonHolder = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.black
 }));
 
-export const TextFieldHolder = styled(TextField)({
-  '& .MuiInputLabel-root': { // Target the label
-    color: 'black', // Default label color
+export const TextFieldHolder = styled(TextField)(({ theme }) => ({
+  '& .MuiInputLabel-root': { 
+    color: theme.palette.primary.black, 
   },
-  '&:hover .MuiInputLabel-root': { // Change label color on hover
-    color: 'white',
+  '&:hover .MuiInputLabel-root': { 
+    color: theme.palette.primary.white,
   },
   '& .MuiFilledInput-root': {
-    '&:after': { // Underline color when textfield is focused
-      borderBottomColor: 'orange',
+    '&:after': { 
+      borderBottomColor: theme.palette.primary.white,
     },
-    '&:hover:before': { // Underline color on hover (before focus)
-      borderBottomColor: 'white', // Try to match the label color or use any color
+    '&:hover:before': { 
+      borderBottomColor: theme.palette.primary.white, 
     },
   },
-});
+}));

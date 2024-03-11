@@ -1,5 +1,5 @@
 // React Elements
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { ColorModeContext } from "./Context";
 
@@ -7,13 +7,17 @@ import { ColorModeContext } from "./Context";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Types
-import { AlertWithTimeoutHookProps, ForecastData, LocationState, WeatherData } from "@/types";
+import { AlertWithTimeoutHookProps, ForecastData, LocationState, WeatherData, CustomPalette } from "@/types";
 
 // Hooks
 import { fetchCoordinatesForCity, fetchCurrentLocation, fetchWeatherData, fetchWeatherForecast } from "./fn";
 
 // Constants
-import { C, DATE_UNDEFINED, DETAILED_WEATHER, F, GEOLOCATION, METRIC_SYSTEM, WEATHER_FORCAST } from "@/constants/common";
+import { C, DATE_UNDEFINED, DETAILED_WEATHER, F, GEOLOCATION, METRIC_SYSTEM, WEATHER_FORCAST } from "@/helper/constants";
+
+// MUI Elements
+import { createTheme } from "@mui/material/styles";
+import { PaletteMode, colors } from "@mui/material";
 
 
 // Async fetch and cache the user's geolocation data with no expiration time
@@ -101,71 +105,26 @@ export const usePrefetchWeatherData = () => {
   return prefetchWeatherData;
 };
 
-// export const useWeatherForecast = () => {
+export const useWeatherForecast = () => {
+  const { data: cachedLocation } = useQuery({
+    queryKey: [GEOLOCATION],
+    initialData: JSON.parse(localStorage.getItem(GEOLOCATION) || '{}')
+  });
 
-//   const queryClient = useQueryClient();
-//   const cachedLocation = queryClient.getQueryData<LocationState>([GEOLOCATION]);
-
-//   console.log('cachedLocation: ', cachedLocation)
-
-//   // Initializing the metricSystem query with a value from localStorage (if it exists) or defaulting to Celsius (C)
-//   // This value is then cached by React Query under the provided queryKey, allowing other parts of the application to access
-//   const { data: metricSystem } = useQuery({
-//     queryKey: [METRIC_SYSTEM],
-//     initialData: localStorage.getItem(METRIC_SYSTEM) || C
-//   });
-
-//   const { data: forecast, isLoading, error } = useQuery<ForecastData, Error>({
-//     queryKey: [WEATHER_FORCAST, cachedLocation?.lat, cachedLocation?.lon],
-//     queryFn: () => fetchWeatherForecast(cachedLocation?.lat, cachedLocation?.lon),
-//     enabled: cachedLocation?.lat !== undefined && cachedLocation?.lon !== undefined, // Only run if lat and lon are available
-//     staleTime: Infinity,
-//   });
-
-//   return { forecast, isLoading, error: error?.message, metricSystem };
-// };
-
-
-export const useWeatherForecast = (cachedLocation: any) => {
   const { data: metricSystem } = useQuery({
     queryKey: [METRIC_SYSTEM],
-    initialData: () => localStorage.getItem(METRIC_SYSTEM) || 'C',
+    initialData: localStorage.getItem(METRIC_SYSTEM) || C
   });
 
   const { data: forecast, isLoading, error } = useQuery<ForecastData, Error>({
     queryKey: [WEATHER_FORCAST, cachedLocation?.lat, cachedLocation?.lon],
     queryFn: () => fetchWeatherForecast(cachedLocation?.lat, cachedLocation?.lon),
-    enabled: !!cachedLocation?.lat && !!cachedLocation?.lon, // Only run if lat and lon are available
+    enabled: cachedLocation?.lat !== undefined && cachedLocation?.lon !== undefined, // Only run if lat and lon are available
     staleTime: Infinity,
   });
 
   return { forecast, isLoading, error: error?.message, metricSystem };
 };
-
-
-
-// export const useWeatherForecast = (cachedLocation: any) => {
-//   //const queryClient = useQueryClient();
-//   //const cachedLocation = queryClient.getQueryData<LocationState>([GEOLOCATION]);
-
-
-//   console.log('useWeatherForecast coordinates: ', cachedLocation)
-
-//   // Define the query using a single options object.
-//   const { data: forecast, isLoading, error } = useQuery<ForecastData, Error>({
-//     queryKey: [WEATHER_FORCAST, cachedLocation?.lat, cachedLocation?.lon],
-//     queryFn: () => fetchWeatherForecast(cachedLocation?.lat, cachedLocation?.lon),
-//     enabled: !!cachedLocation?.lat && !!cachedLocation?.lon, // Only run if lat and lon are available
-//     staleTime: Infinity,
-//   });
-
-//   const { data: metricSystem } = useQuery({
-//     queryKey: [METRIC_SYSTEM],
-//     initialData: () => localStorage.getItem(METRIC_SYSTEM) || 'C',
-//   });
-
-//   return { forecast, isLoading, error: error?.message, metricSystem };
-// };
 
 
 export const useHandleSearchCityForm = () => {
@@ -205,32 +164,70 @@ export const useHandleSearchCityForm = () => {
   return { inputRef, handleSearch };
 };
 
+export const useSearchCity = () => {
+  const queryClient = useQueryClient();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSearch = async () => {
+    const cityName = inputRef.current?.value.trim();
+    if (cityName) {
+      try {
+        const fetchedCoordinates = await fetchCoordinatesForCity(cityName);
+        if (fetchedCoordinates) {
+          // Update localStorage
+          localStorage.setItem(GEOLOCATION, JSON.stringify(fetchedCoordinates));
+
+          // Update React Query's cache
+          queryClient.setQueryData<LocationState>([GEOLOCATION], fetchedCoordinates);
+        }
+      } catch (error) {
+        console.error('Error fetching coordinates:', error);
+      }
+    }
+  };
+
+  return { inputRef, handleSearch };
+};
+
+export const useWeatherTheme = (mode: PaletteMode) => {
+  // memoizing the result so it won't calculate every time
+  const theme = useMemo(
+    () =>
+      createTheme({
+        components: {
+          MuiCssBaseline: {
+            styleOverrides: {
+              body: {
+                margin: 0,
+                mode,
+                ...(mode === "light"
+                  ? {
+                      backgroundColor: colors.grey[100],
+                      color: colors.grey[900],
+                    }
+                  : {
+                      backgroundColor: colors.orange[900],
+                      color: colors.grey[100],
+                    }),
+              },
+            },
+          },
+        },
+        palette: {
+          primary: {
+            main: mode === "light" ? colors.grey[600] : colors.orange[900],
+            black: mode === "light" ? colors.grey[400] : colors.grey[900],
+            white: mode === "light" ? colors.grey[800] : colors.grey[600],
+            lighter: mode === "light" ? colors.grey[800] : colors.grey[400],
+            iconColor: mode === "light" ? colors.grey[900] : colors.grey[100],
+          },
+          mode, 
+        } as CustomPalette, 
+      }),
+    [mode]
+  );
+
+  return theme;
+};
 
 
-
-
-// export const useHandleSearchCityForm = () => {
-//   const queryClient = useQueryClient()
-//   const inputRef = useRef<HTMLInputElement>(null)
-
-//   const handleSearch = async () => {
-//     const cityName = inputRef.current?.value
-//     if(!cityName) return
-    
-//     try {
-//       const coordinates = await fetchCoordinatesForCity(cityName)
-//       if(coordinates) {
-//         queryClient.invalidateQueries({ queryKey: [WEATHER_FORCAST] });
-//         queryClient.setQueryData([GEOLOCATION], coordinates);
-//         console.log('useHandleSearchCityForm cityName: ', cityName)
-//         console.log('useHandleSearchCityForm coordinates: ', coordinates)
-//       } else {
-//         console.error("Failed to fetch coordinates for the city");
-//       }
-//     } catch(err) {  
-//       console.error("Error fetching coordinates: ", err)
-//     }
-//   }
-
-//   return { inputRef, handleSearch }
-// }

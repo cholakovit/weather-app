@@ -1,5 +1,5 @@
 // Constants
-import { F, FAILED_FETCH_FORCAST_DATA, GEOLOCATION_NOT_SUPPORTED_BROWSER, HTTP_ERROR_STATUS, UNABLE_RETRIEVE_LOCATION } from "@/constants/common";
+import { F, FAILED_FETCH_FORCAST_DATA, GEOLOCATION_NOT_SUPPORTED_BROWSER, HTTP_ERROR_STATUS, UNABLE_RETRIEVE_LOCATION } from "@/helper/constants";
 
 // Types
 import { DailyWeather, ForecastData, HourlyWeather, LocationState, WeatherData } from "@/types";
@@ -80,7 +80,11 @@ export async function fetchCurrentLocation(): Promise<LocationState> {
 
 export async function fetchCoordinatesForCity(cityName: string): Promise<LocationState | null> {
   const url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.REACT_APP_API_KEY}`;
-  const response = await fetch(url);
+
+  const abortController = new AbortController()
+  const signal = abortController.signal
+
+  const response = await fetch(url, { signal: signal });
   if (!response.ok) {
     throw new Error("Failed to fetch coordinates for city");
   }

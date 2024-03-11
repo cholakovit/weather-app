@@ -4,15 +4,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ColorModeContext } from "./helper/Context";
 
 // Hooks
-import { useGeolocationQuery } from "@/helper/hooks";
+import { useGeolocationQuery, useWeatherTheme } from "@/helper/hooks";
 
 // MUI Elements
 import { CssBaseline, PaletteMode, ThemeProvider } from "@mui/material";
-import { useWeatherTheme } from "@/helper/weatherTheme";
+
 import { WeatherApp } from "@/index.style";
 
 // Constants
-import { DARK, GEOLOCATION_ERROR, LIGHT } from "@/constants/common";
+import { DARK, GEOLOCATION_ERROR, LIGHT } from "@/helper/constants";
 
 // Types
 import { ColorModeContextType } from "@/types";

@@ -1,36 +1,20 @@
+// MUI Elements
 import { ButtonHolder, FormHolder, TextFieldHolder } from './index.style'
 import SearchIcon from '@mui/icons-material/Search';
-import { useHandleSearchCityForm } from '@/helper/hooks';
+
+// Components
 import { WeatherForecast } from '../WeatherForecast';
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
-import { fetchCoordinatesForCity } from '@/helper/fn';
-import { GEOLOCATION, WEATHER_FORCAST } from '@/constants/common';
-import { LocationState } from '@/types';
+
+// Hooks
+import { useSearchCity } from '@/helper/hooks';
+
+// Constants
+import { SEARCH } from '@/helper/constants';
 
 export const SearhWeatherCity = () => {
-  const queryClient = useQueryClient();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [cachedLocation, setCachedLocation] = useState<any>()
 
-  const handleSearch = async () => {
-    const cityName = inputRef.current?.value;
-    if (cityName) {
-      try {
-        const fetchedCoordinates = await fetchCoordinatesForCity(cityName);
-        if (fetchedCoordinates) {
-          // Using React Query's queryClient to set global state
-          queryClient.setQueryData<LocationState>([GEOLOCATION], { lat: fetchedCoordinates?.lat, lon: fetchedCoordinates?.lon });
-          console.log('Fetched coordinates:', fetchedCoordinates);
-
-          setCachedLocation(queryClient.getQueryData<any>([GEOLOCATION]))
-          console.log('Fetched coordinates2:', cachedLocation);
-        }
-      } catch (error) {
-        console.error('Error fetching coordinates:', error);
-      }
-    }
-  };
+  // Searching for a city's coordinates, updating localStorage, and React Query's cache with the fetched coordinates.
+  const { inputRef, handleSearch } = useSearchCity();
 
   return (
     <div>
@@ -44,7 +28,7 @@ export const SearhWeatherCity = () => {
           variant="filled"
         />
         <ButtonHolder variant="contained" endIcon={<SearchIcon />} onClick={handleSearch}>
-          Search
+          {SEARCH}
         </ButtonHolder>
       </FormHolder>
       <WeatherForecast />

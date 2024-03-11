@@ -1,7 +1,7 @@
 import { render, screen, act } from '@testing-library/react';
 
 import AlertMessage from '.';
-import { ERROR, INITIAL_ALERT, SUCCESS } from '../../constants/common';
+import { ERROR, INITIAL_ALERT, SUCCESS } from '../../helper/constants';
 
 // Mocking the setTimeout function for Jest
 jest.useFakeTimers();

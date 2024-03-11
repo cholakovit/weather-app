@@ -30,7 +30,7 @@ import {
   NETWORK_RESPONS_NOT_OK,
   TEMPERATURE,
   TIME,
-} from "@/constants/common";
+} from "@/helper/constants";
 
 export const DetailedWeather = () => {
 

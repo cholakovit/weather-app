@@ -19,6 +19,7 @@ export const GEOLOCATION = "geolocation"
 export const METRIC_SYSTEM = "metricSystem"
 export const WEATHER_FORCAST = "weatherForecast"
 export const DETAILED_WEATHER = "detailedWeather"
+export const SEARCH = "Search"
 export const C = "C"
 export const F = "F"
 

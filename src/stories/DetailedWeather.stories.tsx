@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { DetailedWeather } from '../components/DetailedWeather';
 import { ThemeProvider } from '@mui/material/styles';
-import { useWeatherTheme } from '../helper/weatherTheme'; // Adjust the import path as needed
+import { useWeatherTheme } from '@/helper/hooks';
+ // Adjust the import path as needed
 
 // Mocks and Providers
 const queryClient = new QueryClient();
