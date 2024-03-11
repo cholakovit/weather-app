@@ -2,8 +2,8 @@
 import { useParams } from "react-router-dom";
 
 // Hooks
-import { useDetailedWeather } from "../../helper/hooks";
-import { displayTemperature } from "../../helper/fn";
+import { useDetailedWeather } from "@/helper/hooks";
+import { displayTemperature } from "@/helper/fn";
 
 // MUI Elements
 import CloudSharpIcon from "@mui/icons-material/CloudSharp";
@@ -13,13 +13,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import StyledTableCell from "@mui/material/TableCell";
 import StyledTableRow from "@mui/material/TableRow";
-import { H1Holder, StyledLink } from "../WeatherForecast/index.style";
+import { H1Holder, StyledLink } from "@/components/WeatherForecast/index.style";
 import { CenteredContainer, TableContainerHolder } from "./index.style";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 
 // Components
-import AlertMessage from "../Alert";
-import Skeletons from "../Skeletons";
+import AlertMessage from "@/components/Alert";
+import Skeletons from "@/components/Skeletons";
 
 // Constants
 import {
@@ -30,14 +30,14 @@ import {
   NETWORK_RESPONS_NOT_OK,
   TEMPERATURE,
   TIME,
-} from "../../constants/common";
+} from "@/constants/common";
 
 export const DetailedWeather = () => {
+
+  // Fetches detailed hourly weather data based on a specified date and user's location, and it manages loading states, errors, and system metric preferences.
   const { hourlyData, isLoading, error, metricSystem } = useDetailedWeather();
   
   const { date } = useParams<{ date: string }>();
-
-  console.log('hourlyData: ', hourlyData)
 
   return (
     <>

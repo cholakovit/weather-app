@@ -8,9 +8,12 @@ import {
 } from "./index.style";
 
 // Hooks
-import { useMetricSystem } from "../../helper/hooks";
+import { useMetricSystem } from "@/helper/hooks";
 
 const Header = () => {
+
+  // Manages the metric system (Celsius or Fahrenheit) for temp display, allowing toggling between them 
+  // and synchronizing this preference with  both localStorage and React Query's cache.
   const { metricSystem, toggleMetricSystem, colorMode } = useMetricSystem();
 
   return (

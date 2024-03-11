@@ -1,7 +1,7 @@
 // Styled Elements
 import { styled } from '@mui/material/styles';
 
-export const WeatherApp = styled('h1')(({ theme }) => ({
+export const WeatherApp = styled('div')(({ theme }) => ({
   textAlign: 'center',
   width: '100%',
   height: '100%',

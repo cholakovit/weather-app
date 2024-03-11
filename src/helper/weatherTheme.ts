@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import { PaletteMode, colors } from "@mui/material";
 import { CustomPalette } from "../types";
 
+// dynamically creates and memoizes a Material-UI theme based on the provided mode (light or dark), adjusting colors, backgrounds, and other style 
+// properties accordingly to switch between light and dark themes.
 export const useWeatherTheme = (mode: PaletteMode) => {
   // memoizing the result so it won't calculate every time
   const theme = useMemo(
@@ -35,8 +37,8 @@ export const useWeatherTheme = (mode: PaletteMode) => {
             lighter: mode === "light" ? colors.grey[800] : colors.grey[400],
             iconColor: mode === "light" ? colors.grey[900] : colors.grey[100],
           },
-          mode, // Add the mode property to the palette object
-        } as CustomPalette, // Assert the palette to the custom interface
+          mode, 
+        } as CustomPalette, 
       }),
     [mode]
   );
